@@ -1,16 +1,16 @@
 // Incluye la librería Servo
-#include <Servo.h>. 
-// Defines Tirg y Echo del Ultrasonic Sensor
+#include <Servo.h>
+// Define los pines del sensor ultrasonico
 const int trigPin = 10;
 const int echoPin = 11;
 // Variables para la duración y distancia
 long duration;
 int distance;
-Servo myServo; // Creas una variable servo
+Servo myServo; // Crea una variable servo
 void setup() {
-  pinMode(trigPin, OUTPUT); // Sets el trigPin como un Output
-  pinMode(echoPin, INPUT); // Sets el echoPin como uun Input
-  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT); // configura trigPin como una salida
+  pinMode(echoPin, INPUT); // configura echoPin como una entrada
+  Serial.begin(9600); // inicializa la comunicacion serial con la interfaz arduino
   myServo.attach(12); // Defines los pines del servo
 }
 void loop() {
@@ -19,11 +19,12 @@ void loop() {
   myServo.write(i);
   delay(30);
   distance = calculateDistance();// calcular distancia
-  
-  Serial.print(i); // (inglés)Sends the current degree into the Serial Port
-  Serial.print(","); // (inglés)Sends addition character right next to the previous value needed later in the Processing IDE for indexing
-  Serial.print(distance); //(inglés) Sends the distance value into the Serial Port
-  Serial.print("."); // (inglés)Sends addition character right next to the previous value needed later in the Processing IDE for indexing
+
+  //Hace el envio de los datos del sensor ultrasonico por el la conexión serial  
+  Serial.print(i); 
+  Serial.print(",");
+  Serial.print(distance);
+  Serial.print(".");
   }
   // repetición
   for(int i=165;i>15;i--){  
@@ -36,15 +37,16 @@ void loop() {
   Serial.print(".");
   }
 }
-// calcular distancia
+
+// funcion que calcula la distancia del
 int calculateDistance(){ 
   
   digitalWrite(trigPin, LOW); 
   delayMicroseconds(1);
-  // Sets the trigPin on HIGH state for 10 micro seconds
+  //activa el emisor ultrasonico por 10 microsegundos
   digitalWrite(trigPin, HIGH); 
   delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+  digitalWrite(trigPin, LOW, 8000);
   duration = pulseIn(echoPin, HIGH,5000); // leer el echoPin, retorna la honda ultrasónica
   distance= duration*0.034/2;
   return distance;
